@@ -20,7 +20,7 @@ class _Survey(object):
         method = "list_surveys"
         params = OrderedDict([
             ("sSessionKey", self.api.session_key),
-            ("iSurveyID", username or self.api.username)
+            ("sUsername", username or self.api.username)
         ])
         response = self.api.query(method=method, params=params)
         response_type = type(response)
