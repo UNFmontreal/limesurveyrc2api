@@ -280,9 +280,9 @@ class _Token(object):
     def remind_participants(self, survey_id, min_days_between=None,
                             max_reminders=None, token_ids=False):
         """ Send a reminder to participants in a survey.
-        
+
         Returns result of sending.
-        
+
         Parameters
         :param survey_id: ID of the Survey that participants belong.
         :type survey_id: Integer
@@ -312,6 +312,44 @@ class _Token(object):
                 "Error: Invalid survey ID",
                 "No permission",
                 "Invalid Session Key"
+            ]
+            for message in error_messages:
+                if status == message:
+                    raise LimeSurveyError(method, status)
+        else:
+            assert response_type is list
+        return response
+
+
+    def update_response(self, survey_id, attributes):
+        """ Update a response in a given survey.
+
+        Returns result of sending (True or Raise Error).
+
+        Parameters
+        :param survey_id: ID of the Survey that participants belong.
+        :type survey_id: Integer
+        :param attributes:  Days from last reminder.
+        :type min_days_between: Array
+        """
+        method = "update_response"
+        params = OrderedDict([("sSessionKey", self.api.session_key),
+                              ("iSurveyID", survey_id),
+                              ("aResponseData", attributes)])
+
+        response = self.api.query(method=method, params=params)
+        response_type = type(response)
+
+        if response_type is dict and "status" in response:
+            status = response["status"]
+            error_messages = [
+                "Invalid session key",
+                "Error: Invalid survey ID",
+                "Error: Survey is not active.",
+                "Error: Survey does not allow edit after completion.",
+                "Error: No survey response table",
+                "Error: No matching Response.",
+                "Error: More then one matching response, updateing multiple responses at once is not supported."
             ]
             for message in error_messages:
                 if status == message:
