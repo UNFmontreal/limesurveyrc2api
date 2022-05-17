@@ -339,7 +339,7 @@ class _Token(object):
 
         response = self.api.query(method=method, params=params)
 
-        if isinstance(response, str)
+        if isinstance(response, str):
             error_messages = [
                 "Invalid session key",
                 "Error: Invalid survey ID",
