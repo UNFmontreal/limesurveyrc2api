@@ -338,10 +338,8 @@ class _Token(object):
                               ("aResponseData", attributes)])
 
         response = self.api.query(method=method, params=params)
-        response_type = type(response)
 
-        if response_type is dict and "status" in response:
-            status = response["status"]
+        if isinstance(response, str)
             error_messages = [
                 "Invalid session key",
                 "Error: Invalid survey ID",
@@ -352,8 +350,7 @@ class _Token(object):
                 "Error: More then one matching response, updateing multiple responses at once is not supported."
             ]
             for message in error_messages:
-                if status == message:
+                if response == message:
                     raise LimeSurveyError(method, status)
         else:
-            assert response_type is list
-        return response
+            return response
